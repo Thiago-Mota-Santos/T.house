@@ -1,5 +1,6 @@
 import "./globals.css";
-import "ui/src/styles.css";
+// eslint-disable-next-line import/no-relative-packages
+import '../../../../packages/ui/src/styles.css'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
