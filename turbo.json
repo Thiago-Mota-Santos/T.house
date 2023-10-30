@@ -7,7 +7,13 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": [
+        "PORT",
+        "NODE_ENV",
+        "MONGO_URI",
+        "JWT_SECRET"
+      ] 
     },
     "check-types": {},
     "dev": {
@@ -17,5 +23,6 @@
     "clean": {
       "cache": false
     }
+    
   }
 }
