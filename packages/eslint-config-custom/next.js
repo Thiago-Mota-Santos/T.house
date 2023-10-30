@@ -27,6 +27,7 @@ module.exports = {
     React: true,
     JSX: true,
   },
+  plugins: ["prettier"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -41,5 +42,19 @@ module.exports = {
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
-  },
+    "unicorn/filename-case": "off",
+    "no-console": "off",
+    "import/no-named-as-default-member" : "off",
+    "prettier/prettier":[
+      "error",
+      {
+         "printWidth": 80,
+         "tabWidth": 2,
+         "singleQuote": false,
+         "trailingComma": "all",
+         "arrowParens": "always",
+         "semi": true
+      }
+    ]
+  }
 };
