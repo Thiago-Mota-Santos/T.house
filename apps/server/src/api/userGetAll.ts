@@ -1,19 +1,17 @@
-import UserModel from "../modules/user/UserModel";
+import type { ParameterizedContext } from "koa";
+import { UserModel } from "../modules/user/UserModel";
 
-export const userGetAll = async (ctx) => {
+export const userGetAll = async (ctx: ParameterizedContext): Promise<void> => {
   try {
     const users = await UserModel.find({
       removedAt: null,
-    })
-      .lean();
-
+    }).lean();
 
     ctx.status = 200;
     ctx.body = {
       users,
     };
   } catch (err) {
-    // eslint-disable-next-line
     console.log("err: ", err);
 
     ctx.status = 500;

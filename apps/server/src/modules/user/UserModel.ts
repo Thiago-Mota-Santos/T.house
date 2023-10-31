@@ -1,4 +1,5 @@
-import mongoose, { Document, Model } from "mongoose";
+import type { Document } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const UserSchema = new mongoose.Schema(
@@ -30,10 +31,10 @@ const UserSchema = new mongoose.Schema(
       updatedAt: "updatedAt",
     },
     collection: "User",
-  }
+  },
 );
 
-export interface IUser extends Document {
+export interface User extends Document {
   name: string;
   email: string;
   password: string;
@@ -44,17 +45,18 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
-UserSchema.pre<IUser>("save", function encryptPasswordHook(next) {
+UserSchema.pre<User>("save", function encryptPasswordHook(next) {
   // Hash the password
   if (this.isModified("password")) {
     this.password = this.encryptPassword(this.password);
   }
 
-  return next();
+  next();
 });
 
 UserSchema.methods = {
   authenticate(plainTextPassword: string) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return bcrypt.compareSync(plainTextPassword, this.password);
   },
   encryptPassword(password: string) {
@@ -62,6 +64,6 @@ UserSchema.methods = {
   },
 };
 
-const UserModel = mongoose.model<IUser>('User', UserSchema)
+export const UserModel = mongoose.model<User>("User", UserSchema);
 
 export default UserModel;

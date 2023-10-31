@@ -1,7 +1,7 @@
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
-import cors from 'kcors'
+import cors from "kcors";
 import Router from "koa-router";
 import { userGetAll } from "./api/userGetAll";
 
@@ -10,13 +10,10 @@ const router = new Router();
 
 app.use(bodyParser());
 
-
 app.use(logger());
-app.use(cors({ credentials: true }))
-
+app.use(cors({ credentials: true }));
 
 router.get("/api/user", userGetAll);
-
 
 // Default not found 404
 app.use((ctx) => {
