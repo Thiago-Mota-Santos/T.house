@@ -45,6 +45,7 @@ module.exports = {
     "unicorn/filename-case": "off",
     "no-console": "off",
     "import/no-named-as-default-member" : "off",
+    "eslint-comments/require-description": "off",
     "prettier/prettier":[
       "error",
       {
