@@ -47,6 +47,7 @@ module.exports = {
     "import/no-named-as-default-member" : "off",
     "eslint-comments/require-description": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "prettier/prettier":[
       "error",
       {
