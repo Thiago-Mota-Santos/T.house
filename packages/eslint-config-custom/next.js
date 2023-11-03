@@ -48,6 +48,7 @@ module.exports = {
     "eslint-comments/require-description": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/non-nullable-type-assertion-style": "off",
     "prettier/prettier":[
       "error",
       {
