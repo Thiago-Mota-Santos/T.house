@@ -21,7 +21,7 @@ export const auth = async (ctx: ParameterizedContext, next: Next) => {
     const decodedId = decodedToken as unknown as { user: string };
 
     const user = await UserModel.findOne({ _id: decodedId.user });
-    console.log(user);
+
     if (!user) {
       ctx.status = 401;
       ctx.body = {
