@@ -1,6 +1,6 @@
 import type { ParameterizedContext } from "koa";
-import { generateToken } from "../../auth/generateToken";
-import UserModel from "../../modules/user/UserModel";
+import { UserModel } from "../../modules/user/UserModel";
+import { generateToken } from "../../auth/auth";
 
 interface UserBody {
   email: string;
@@ -9,11 +9,10 @@ interface UserBody {
 
 export const loginAuth = async (ctx: ParameterizedContext) => {
   const { email, password } = ctx.request.body as UserBody;
-
   if (!email || !password) {
     ctx.status = 401;
     ctx.body = {
-      message: "email or password incorrect",
+      message: "Email or password incorrect",
     };
 
     return;
@@ -25,6 +24,7 @@ export const loginAuth = async (ctx: ParameterizedContext) => {
   });
 
   if (!user) {
+    console.log("has user");
     ctx.status = 401;
     ctx.body = {
       message: "Email or password incorrect",
