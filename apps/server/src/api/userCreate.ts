@@ -3,7 +3,7 @@ import { UserModel } from "../modules/user/UserModel";
 import { validateUserApi } from "./restUtils";
 import { userGetApi } from "./userGet";
 
-interface User {
+export interface User {
   name: string;
   email: string;
   password: string;
@@ -31,7 +31,6 @@ export const userCreate = async (ctx: ParameterizedContext) => {
 
   const { user: userExist } = await userGetApi(undefined, userValidated?.email);
 
-  console.log(userExist);
   if (userExist) {
     ctx.status = 400;
     ctx.body = {

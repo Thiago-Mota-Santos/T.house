@@ -41,6 +41,5 @@ export const checkObjectId = (id: string) => {
   if (!Types.ObjectId.isValid(id)) {
     return null;
   }
-
   return getObjectId(id);
 };

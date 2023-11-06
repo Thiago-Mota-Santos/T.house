@@ -28,7 +28,6 @@ const hasUser = (id?: string, email?: string) => {
 
 export const userGetApi = async (id?: string, email?: string) => {
   const { error, userExist } = hasUser(id, email);
-
   if (error) {
     return {
       error,
