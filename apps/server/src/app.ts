@@ -9,6 +9,7 @@ import { auth } from "./auth/auth";
 import { loginAuth } from "./api/auth/loginAuth";
 import { userDelete } from "./api/userDelete";
 import { userGet } from "./api/userGet";
+import { userUpdate } from "./api/userUpdate";
 
 const app = new Koa();
 
@@ -32,6 +33,7 @@ app.use(routerOpen.routes());
 
 routerAuth.use(auth);
 
+routerAuth.put("/api/user/:id", userUpdate);
 routerAuth.get("/api/user/:id", userGet);
 routerAuth.delete("/api/user/:id", userDelete);
 routerAuth.post("/api/user", userCreate);
