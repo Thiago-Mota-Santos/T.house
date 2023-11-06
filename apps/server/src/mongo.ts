@@ -35,5 +35,6 @@ export const connectDatabase = (): Promise<void> =>
     void mongoose.connect(config.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      directConnection: true,
     });
   });
