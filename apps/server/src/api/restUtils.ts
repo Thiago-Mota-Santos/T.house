@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
 import { z } from "zod";
 import { ValidationError } from "zod-validation-error";
+import { getObjectId } from "../test/getObjectId";
 
 interface User {
   name: string;
@@ -33,4 +35,12 @@ export const validateUserApi = (apiUser: User) => {
     user: apiUser,
     error: null,
   };
+};
+
+export const checkObjectId = (id: string) => {
+  if (!Types.ObjectId.isValid(id)) {
+    return null;
+  }
+
+  return getObjectId(id);
 };
