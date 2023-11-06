@@ -3,7 +3,7 @@ import { UserModel } from "../modules/user/UserModel";
 import { getObjectId } from "../test/getObjectId";
 
 export const userDelete = async (ctx: ParameterizedContext) => {
-  const { id } = ctx.params;
+  const { id } = ctx.params as { id: string };
 
   if (!id) {
     ctx.status = 400;
