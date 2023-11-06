@@ -9,7 +9,7 @@ interface User {
   password: string;
 }
 
-export const userCreate = async (ctx: ParameterizedContext): Promise<void> => {
+export const userCreate = async (ctx: ParameterizedContext) => {
   const { user } = ctx.request.body as { user: User };
 
   if (!user) {
@@ -17,12 +17,10 @@ export const userCreate = async (ctx: ParameterizedContext): Promise<void> => {
     ctx.body = {
       message: "User is required",
     };
-
     return;
   }
 
   const { user: userValidated, error } = validateUserApi(user);
-
   if (error) {
     ctx.status = 400;
     ctx.body = {
@@ -33,6 +31,7 @@ export const userCreate = async (ctx: ParameterizedContext): Promise<void> => {
 
   const { user: userExist } = await userGetApi(undefined, userValidated?.email);
 
+  console.log(userExist);
   if (userExist) {
     ctx.status = 400;
     ctx.body = {
