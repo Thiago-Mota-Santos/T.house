@@ -1,5 +1,8 @@
-import type { Types, Document } from "mongoose";
+import { Types } from "mongoose";
+import type { Document } from "mongoose";
 
-export declare const getObjectId: (
-  target: string | Document | Types.ObjectId,
-) => Types.ObjectId | null;
+export const getObjectId = (target: string | Document | Types.ObjectId) => {
+  if (target instanceof Types.ObjectId) {
+    return new Types.ObjectId(target.toString());
+  }
+};
