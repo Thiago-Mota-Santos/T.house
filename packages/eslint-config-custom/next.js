@@ -51,6 +51,7 @@ module.exports = {
     "@typescript-eslint/non-nullable-type-assertion-style": "off",
     "@typescript-eslint/no-unnecessary-condition": "off",
     "@typescript-eslint/no-unsafe-member-access" : "off",
+    "@typescript-eslint/no-unsafe-call": "off",
     "prettier/prettier":[
       "error",
       {
