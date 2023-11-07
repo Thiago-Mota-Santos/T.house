@@ -2,14 +2,16 @@ import request from "supertest";
 import app from "../app";
 
 interface ApiArgs {
-  url: string;
+  url: string | null;
   authorization: string | null;
   payload: object | null;
-  domain: string | null;
+  domain?: string | null;
 }
 
 export async function apiCallTestCreate(args: ApiArgs) {
   const { url, payload: body, authorization } = args;
+
+  if (!url) return;
 
   const payload = {
     ...body,
@@ -20,8 +22,8 @@ export async function apiCallTestCreate(args: ApiArgs) {
     .set({
       Accept: "application/json",
       "Content-Type": "application/json",
-      ...(authorization ? { authorization } : {}),
     })
+    .set("Cookie", [`authToken=${authorization}`])
     .send(JSON.stringify(payload));
 
   return response;
