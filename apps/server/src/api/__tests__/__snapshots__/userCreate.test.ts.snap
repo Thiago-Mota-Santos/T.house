@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should create user with success 1`] = `
+{
+  "user": {
+    "__v": 0,
+    "_id": "ObjectId",
+    "createdAt": "FROZEN-CREATEDAT",
+    "email": "user2@test.com",
+    "name": "User 21",
+    "password": "FROZEN-PASSWORD",
+    "removedAt": "EMPTY",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+}
+`;
+
+exports[`should return error if header is not set 1`] = `
+{
+  "message": "Some error occurred",
+}
+`;
+
+exports[`should return error if user email it was not passed 1`] = `
+{
+  "message": "User is required",
+}
+`;
+
+exports[`should return error if user name it was not passed 1`] = `
+{
+  "message": "User is required",
+}
+`;
+
+exports[`should return error if user password it was not passed 1`] = `
+{
+  "message": "User is required",
+}
+`;
