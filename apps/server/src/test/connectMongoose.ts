@@ -1,17 +1,26 @@
+import type { ConnectOptions } from "mongoose";
 import mongoose from "mongoose";
 
-const mongooseOptions = {
+declare global {
+  namespace NodeJS {
+    interface Global {
+      __MONGO_URI__: string;
+      __MONGO_DB_NAME__: string;
+    }
+  }
+
+  var __MONGO_DB_NAME__: string;
+  var __MONGO_URI__: string;
+}
+
+const mongooseOptions: ConnectOptions = {
   autoIndex: false,
-  autoReconnect: false,
   connectTimeoutMS: 10000,
-  useNewUrlParser: true,
-  useCreateIndex: true,
+  dbName: global.__MONGO_DB_NAME__,
 };
 
-export async function connectMongoose() {
-  jest.setTimeout(20000);
-  return mongoose.connect(global.__MONGO_URI__, {
-    ...mongooseOptions,
-    dbName: global.__MONGO_DB_NAME__,
-  });
-}
+export const connectMongoose = async (): Promise<typeof mongoose> => {
+  mongoose.set("strictQuery", true);
+
+  return mongoose.connect(global.__MONGO_URI__, mongooseOptions);
+};
