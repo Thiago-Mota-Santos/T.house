@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "seed:user": "tsx src/scripts/seedUser.ts 1",
-    "copy-env": "cp .env.example .env"
+    "copy-env": "cp .env.example .env",
+    "test": "yarn jest"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.5",
