@@ -55,6 +55,7 @@ module.exports = {
     "typescript-eslint/no-unsafe-return": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-misused-promises": "off",
+    "unicorn/filename-case": "off",
     "prettier/prettier":[
       "error",
       {
