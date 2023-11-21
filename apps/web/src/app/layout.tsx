@@ -1,7 +1,14 @@
 import "./globals.css";
-import "@thouse/ui/src/styles.css";
+import "@radix-ui/themes/styles.css";
+
+// import "@thouse/ui/src/styles.css";
+// eslint-disable-next-line import/no-relative-packages
+import "../../../../packages/ui/src/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Theme } from "@radix-ui/themes";
+import { AccountFormProvider } from "./context/AccountFormContext";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +24,13 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthContextProvider>
+          <AccountFormProvider>
+            <Theme>{children}</Theme>
+          </AccountFormProvider>
+        </AuthContextProvider>
+      </body>
     </html>
   );
 }
