@@ -1,3 +1,4 @@
+import { type } from "node:os";
 import { Button, Flex } from "@radix-ui/themes";
 import {
   Form,
@@ -7,6 +8,9 @@ import {
   FormMessage,
   FormSubmit,
 } from "@radix-ui/react-form";
+import { useRouter } from "next/navigation";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { Input, Textarea } from "./ui/Input";
 
 // const formSchema = z.object({
@@ -16,8 +20,30 @@ import { Input, Textarea } from "./ui/Input";
 // });
 
 export default function FormPanel(props) {
+  const [data, setData] = useState({
+    clientName: "",
+    pixKey: "",
+    value: "",
+    description: "",
+  });
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    console.log("kekers");
+    router.push("/qrcode");
+  };
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
   return (
-    <Form className="mt-10">
+    <Form className="mt-10" onSubmit={handleSubmit}>
       <FormField className="grid mb-4" name="name">
         <Flex align="baseline" display="flex" justify="between">
           <FormLabel className="text-base font-medium text-black">
@@ -28,7 +54,31 @@ export default function FormPanel(props) {
           </FormMessage>
         </Flex>
         <FormControl asChild>
-          <Input required />
+          <Input
+            name="clientName"
+            onChange={handleChange}
+            required
+            value={data.clientName}
+          />
+        </FormControl>
+      </FormField>
+      <FormField className="grid mb-4" name="qrcode">
+        <Flex align="baseline" display="flex" justify="between">
+          <FormLabel className="text-base font-medium text-black">
+            Chave Pix
+          </FormLabel>
+          <FormMessage className="text-red-700" match="valueMissing">
+            Por favor insira a chave pix
+          </FormMessage>
+        </Flex>
+        <FormControl asChild>
+          <Input
+            name="pixKey"
+            onChange={handleChange}
+            placeholder="Chave Pix"
+            required
+            value={data.pixKey}
+          />
         </FormControl>
       </FormField>
       <FormField className="grid mb-4" name="price">
@@ -41,7 +91,14 @@ export default function FormPanel(props) {
           </FormMessage>
         </Flex>
         <FormControl asChild>
-          <Input placeholder="Insira o valor" required type="number" />
+          <Input
+            name="value"
+            onChange={handleChange}
+            placeholder="Insira o valor"
+            required
+            type="number"
+            value={data.value}
+          />
         </FormControl>
       </FormField>
       <FormField className="grid mb-4" name="question">
@@ -53,8 +110,10 @@ export default function FormPanel(props) {
         <FormControl asChild>
           <Textarea
             className="resize-none"
+            name="description"
+            onChange={handleChange}
             placeholder="Insira uma descrição (opcional)"
-            required
+            value={data.description}
           />
         </FormControl>
       </FormField>
