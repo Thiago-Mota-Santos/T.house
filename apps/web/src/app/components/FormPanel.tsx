@@ -8,9 +8,10 @@ import {
   FormMessage,
   FormSubmit,
 } from "@radix-ui/react-form";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
+import type { Account } from "../context/AccountFormContext";
 import { Input, Textarea } from "./ui/Input";
 
 // const formSchema = z.object({
@@ -19,25 +20,26 @@ import { Input, Textarea } from "./ui/Input";
 //   }),
 // });
 
-export default function FormPanel(props) {
-  const [data, setData] = useState({
+interface FormInterface {
+  handleSubmit: () => Promise<void>;
+  data: Account;
+  userId?: string;
+}
+
+export default function FormPanel({ handleSubmit, data }: FormInterface) {
+  const [info, setInfo] = useState({
     clientName: "",
     pixKey: "",
     value: "",
     description: "",
   });
-  const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log("kekers");
-    router.push("/qrcode");
-  };
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
+    setInfo({
+      ...info,
       [name]: value,
     });
   };
@@ -58,7 +60,7 @@ export default function FormPanel(props) {
             name="clientName"
             onChange={handleChange}
             required
-            value={data.clientName}
+            value={info.clientName}
           />
         </FormControl>
       </FormField>
@@ -77,7 +79,7 @@ export default function FormPanel(props) {
             onChange={handleChange}
             placeholder="Chave Pix"
             required
-            value={data.pixKey}
+            value={info.pixKey}
           />
         </FormControl>
       </FormField>
@@ -97,7 +99,7 @@ export default function FormPanel(props) {
             placeholder="Insira o valor"
             required
             type="number"
-            value={data.value}
+            value={info.value}
           />
         </FormControl>
       </FormField>
@@ -113,7 +115,7 @@ export default function FormPanel(props) {
             name="description"
             onChange={handleChange}
             placeholder="Insira uma descrição (opcional)"
-            value={data.description}
+            value={info.description}
           />
         </FormControl>
       </FormField>
