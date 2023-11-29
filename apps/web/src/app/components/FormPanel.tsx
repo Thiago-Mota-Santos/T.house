@@ -1,4 +1,3 @@
-import { type } from "node:os";
 import { Button, Flex } from "@radix-ui/themes";
 import {
   Form,
@@ -8,40 +7,88 @@ import {
   FormMessage,
   FormSubmit,
 } from "@radix-ui/react-form";
-// import { useRouter } from "next/navigation";
-import type { ChangeEvent } from "react";
-import { useState } from "react";
-import type { Account } from "../context/AccountFormContext";
-import { Input, Textarea } from "./ui/Input";
+import type { ChangeEvent, FormEvent, SetStateAction } from "react";
+import { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import {
+  AccountForm,
+  type Account,
+  type FormState,
+} from "../context/AccountFormContext";
+import { Input, InputMask, InputMoneyMask, Textarea } from "./ui/Input";
 
-// const formSchema = z.object({
-//   username: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-// });
+// TODO: add zod to verify fields
+const formSchema = z.object({
+  username: z.string().min(1),
+  pixKey: z.string().min(32),
+  value: z,
+});
 
 interface FormInterface {
-  handleSubmit: () => Promise<void>;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   data: Account;
   userId?: string;
 }
 
-export default function FormPanel({ handleSubmit, data }: FormInterface) {
-  const [info, setInfo] = useState({
-    clientName: "",
-    pixKey: "",
-    value: "",
-    description: "",
-  });
+export default function FormPanel({
+  handleSubmit,
+  data,
+  userId,
+}: FormInterface) {
+  const db = getFirestore();
+  const usersCollection = collection(db, "users");
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const { setStatus, status } = AccountForm();
+
+  useEffect(() => {
+    const q = query(usersCollection, where("id", "==", userId));
+    getDocs(q)
+      .then((querySnapshot) => {
+        if (querySnapshot.size === 0) {
+        } else {
+          querySnapshot.forEach((doc) => {
+            data.setDescription(doc.data().description);
+            data.setPixKey(doc.data().pixKey);
+            data.setStatus(doc.data().clientNameMsg);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar usuário:", error);
+      });
+    getDocs;
+  }, []);
+
+  //   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //     // e.preventDefault()
+  //     const inputValue = e.target.value;
+  //   const reversedValue = inputValue.split('').reverse().join('');
+
+  //   if (inputValue === '' && e.target.selectionStart !== e.target.value.length) {
+
+  //   e.target.value = reversedValue;
+  //   e.target.setSelectionRange(inputValue.length, inputValue.length);
+  // } else {
+  //    const formattedValue = numberFormat(inputValue);
+  //    setValue(formattedValue)
+  //  }
+  // }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInfo({
-      ...info,
+    setStatus((prevStatus) => ({
+      ...prevStatus,
       [name]: value,
-    });
+    }));
+    console.log(status);
   };
 
   return (
@@ -56,12 +103,7 @@ export default function FormPanel({ handleSubmit, data }: FormInterface) {
           </FormMessage>
         </Flex>
         <FormControl asChild>
-          <Input
-            name="clientName"
-            onChange={handleChange}
-            required
-            value={info.clientName}
-          />
+          <Input name="clientName" onChange={handleChange} required />
         </FormControl>
       </FormField>
       <FormField className="grid mb-4" name="qrcode">
@@ -79,7 +121,6 @@ export default function FormPanel({ handleSubmit, data }: FormInterface) {
             onChange={handleChange}
             placeholder="Chave Pix"
             required
-            value={info.pixKey}
           />
         </FormControl>
       </FormField>
@@ -99,7 +140,6 @@ export default function FormPanel({ handleSubmit, data }: FormInterface) {
             placeholder="Insira o valor"
             required
             type="number"
-            value={info.value}
           />
         </FormControl>
       </FormField>
@@ -113,9 +153,7 @@ export default function FormPanel({ handleSubmit, data }: FormInterface) {
           <Textarea
             className="resize-none"
             name="description"
-            onChange={handleChange}
             placeholder="Insira uma descrição (opcional)"
-            value={info.description}
           />
         </FormControl>
       </FormField>
