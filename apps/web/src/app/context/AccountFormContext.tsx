@@ -1,5 +1,5 @@
 "use client";
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import React, { useState } from "react";
 
 const AccountFormContext = React.createContext({} as Account);
@@ -9,18 +9,19 @@ export interface FormState {
   pixKey: string;
   descriptionStatus: "success" | "error" | "none";
   description: "";
-  valueStatus: "success" | "error" | "none";
-  valueMsg: string;
   clientNameStatus: "success" | "error" | "none";
   clientName: string;
 }
 
 export interface Account {
   status: FormState;
-  setStatus: React.Dispatch<React.SetStateAction<FormState>>;
+  setStatus: Dispatch<SetStateAction<FormState>>;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 export function AccountFormProvider({ children }: { children: ReactNode }) {
+  const [value, setValue] = useState<string>("");
   const [status, setStatus] = useState<FormState>({
     pixKeyStatus: "none",
     pixKey: "",
@@ -28,8 +29,6 @@ export function AccountFormProvider({ children }: { children: ReactNode }) {
     description: "",
     clientNameStatus: "none",
     clientName: "",
-    valueStatus: "none",
-    valueMsg: "",
   });
 
   return (
@@ -37,6 +36,8 @@ export function AccountFormProvider({ children }: { children: ReactNode }) {
       value={{
         setStatus,
         status,
+        value,
+        setValue,
       }}
     >
       {children}
